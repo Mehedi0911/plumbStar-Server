@@ -20,6 +20,7 @@ client.connect(err => {
   const technicians = client.db(process.env.DB_NAME).collection("technicians");
   const admins = client.db(process.env.DB_NAME).collection("admins");
   const bookings = client.db(process.env.DB_NAME).collection("bookings");
+  const reviews = client.db(process.env.DB_NAME).collection("reviews");
   console.log('DB COnnected');
 
   //adding services to database.....
@@ -44,6 +45,7 @@ client.connect(err => {
 
   })
 
+  //adding admins....
   app.post('/addAdmin', (req, res) =>{
     const newAdmin = req.body;
     admins.insertOne(newAdmin)
@@ -54,6 +56,8 @@ client.connect(err => {
 
   })
 
+  //adding bookings....
+
   app.post('/bookService', (req, res) => {
     const newBooking =  req.body;
     bookings.insertOne(newBooking)
@@ -63,6 +67,17 @@ client.connect(err => {
     })
   
   })
+
+  app.post('/postReview',(req,res) => {
+    const newReview = req.body;
+    reviews.insertOne(newReview)
+    .then(res =>{
+      console.log(res.insertedCount);
+      res.send(insertedCount>0);
+    })
+  })
+
+
 
   //all get requests.....
   //all services
@@ -100,6 +115,13 @@ client.connect(err => {
   app.get('/editService/:_id', (req, res) =>{
     bookings.find({_id:ObjectId(req.params._id)})
     .toArray((err, docs) => {
+      res.send(docs)
+    })
+  })
+
+  app.get('/allReviews', (req, res) => {
+    reviews.find()
+    .toArray((err, docs) =>{
       res.send(docs)
     })
   })
