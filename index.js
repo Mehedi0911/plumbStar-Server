@@ -144,6 +144,15 @@ client.connect(err => {
     })
   })
 
+  app.get('/userBookings', (req, res) =>{
+    
+    bookings.find({userEmail:req.query.email})
+    .toArray((err, order) => {
+      res.send(order)
+    })
+  })
+
+
   
 
 
