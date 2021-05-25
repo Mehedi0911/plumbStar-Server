@@ -113,7 +113,7 @@ client.connect(err => {
     })
   })
   app.get('/editService/:_id', (req, res) =>{
-    bookings.find({_id:ObjectId(req.params._id)})
+    services.find({_id:ObjectId(req.params._id)})
     .toArray((err, docs) => {
       res.send(docs)
     })
@@ -137,6 +137,41 @@ client.connect(err => {
 
   })
 
+  app.patch('/updateService/:id',(req, res) => {
+    services.updateOne({_id:ObjectId(req.params.id)},
+    {
+      $set:{title:req.body.title, price:req.body.price, description:req.body.description, imgURL:req.body.imgURL}
+    })
+    .then(result => {
+      console.log(result);
+    })
+
+  })
+//delete services.....
+  app.delete('/delete/:id', (req, res) => {
+    services.deleteOne({_id:ObjectId(req.params.id)})
+    .then(result => {
+      res.send(result);
+    })
+  })
+//delete technicians.......
+  app.delete('/deleteTech/:id', (req, res) => {
+    technicians.deleteOne({_id:ObjectId(req.params.id)})
+    .then(result => {
+      res.send(result);
+      
+    })
+  })
+
+  //delete Admin.......
+  app.delete('/deleteAdmin/:id', (req, res) => {
+    admins.deleteOne({_id:ObjectId(req.params.id)})
+    .then(result => {
+      res.send(result);
+      console.log(result);
+    })
+  })
+
   app.get('/allBookings',(req, res) => {
     bookings.find()
     .toArray((err, docs) => {
@@ -151,12 +186,6 @@ client.connect(err => {
       res.send(order)
     })
   })
-
-
-  
-
-
-
 
 });
 
